@@ -53,6 +53,10 @@ control "cis-gcp-#{control_id}-#{control_abbrev}" do
       filter = "metric.type=\"#{metrictype}\" resource.type=\"audited_resource\""
       puts filter
       google_project_alert_policies(project: gcp_project_id).where(policy_enabled_state: true).conditions.each do |policy|
+        x = google_project_alert_policy_condition(policy: policy, filter: filter)
+        puts x
+        puts x.condition_for_filter(filter)
+
         policy.each do |condition|
           puts condition.condition_threshold.filter
           puts condition.condition_threshold.filter == filter
