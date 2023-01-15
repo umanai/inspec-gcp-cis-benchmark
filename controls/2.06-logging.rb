@@ -52,13 +52,14 @@ control "cis-gcp-#{control_id}-#{control_abbrev}" do
     describe.one do
       filter = "metric.type=\"#{metrictype}\" resource.type=\"audited_resource\""
       puts filter
-      google_project_alert_policies(project: gcp_project_id).where(policy_enabled_state: true).policy_names.each do |policy|
-        condition = google_project_alert_policy_condition(policy: policy, filter: filter)
-        puts condition
-        puts condition.exists?
+      google_project_alert_policies(project: gcp_project_id).where(policy_enabled_state: true).conditions.each do |policy|
+        policy.each do |condition|
+          puts condition.condition_threshold.filter
+          puts condition.condition_threshold.filter == filter
+        end
         describe "[#{gcp_project_id}] Custom Role changes alert policy" do
-          subject { condition }
-          it { should exist }
+          subject { condition_threshold.filter }
+          it { should cmp filter }
         end
       end
     end
