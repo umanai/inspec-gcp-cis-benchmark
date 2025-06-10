@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM cincproject/auditor:4.22.0
+FROM cincproject/auditor:5.22.80
 
 COPY . /share/.
 
-RUN gem install rubocop
+RUN gem install rubocop:1.76.1
 
 ENTRYPOINT ["cinc-auditor"]
